@@ -11,7 +11,22 @@ exports.findCustomers = async function (req, res) {
     const query = await db.query(textQuery, values)
     let end = Date.now()
     console.log(`Query executed in ${end-start}ms`)
-    res.status(200).json({message: 'Busca realizada com sucesso!', client: query.rows, error: ''})
+    const returningValue = []
+    
+    for (index in query.rows) {
+      returningValue.push({
+        id: query.rows[index].cst_id_pk,
+        name: query.rows[index].cst_name,
+        birth: query.rows[index].cst_bith,
+        cpf: query.rows[index].cst_cpf,
+        gender: query.rows[index].cst_gender,
+        email: query.rows[index].cst_email,
+        phone: query.rows[index].cst_phone,
+        createdin: query.rows[index].createdin
+      })
+    }
+    
+    res.status(200).json({message: 'Busca realizada com sucesso!', client: returningValue, error: ''})
   }catch(error) {
     console.log(error)
     res.status(404).json({message: `Oops! Error executing query | ${Date()}`, client: [], error: err})
