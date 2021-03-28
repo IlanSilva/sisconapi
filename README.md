@@ -16,7 +16,7 @@ A API tem como função entregar todas as requisições(desde que devidamente au
 Para esta função a API utiliza QUERY STRINGS para realizar a consulta de clientes por nome, basta utilizar a QUERY STRING com a chave 'NAME' e seu valor em seguida.
 
 ##### Exemplo:
-> http://localhost:8082/requests/customers?name=[VALUE]
+> "http://localhost:8082/requests/customers?name=[VALUE]"
 
 Deve-se receber um JSON como o exemplo abaixo:
 
@@ -44,5 +44,5 @@ Deve-se receber um JSON como o exemplo abaixo:
 
 Abaixo alguns objetivos:
 
-[x] API SISCON(Feita mas passando por algumas otimizações)
-[ ] FRONT-END
+- [x] API SISCON(Feita mas passando por algumas otimizações)
+- [ ] FRONT-END SISCON
