@@ -43,7 +43,7 @@ exports.createCustomers = async function(req, res) {
       // Cadastrando o cliente
       await client.query('BEGIN')
       const insertCustomer = 'INSERT INTO customer.customers (CST_NAME, CST_BIRTH, CST_CPF, CST_EMAIL, CST_PHONE, CST_GENDER) VALUES ($1, $2, $3, $4, $5, $6) RETURNING CST_ID_PK'
-      const customerValues = [req.body.name, req.body.birthday, req.body.cpf, req.body.email, req.body.phone, req.body.gender]
+      const customerValues = [req.body.name, req.body.birth, req.body.cpf, req.body.email, req.body.phone, req.body.gender]
       const query = await client.query(insertCustomer, customerValues)
       console.log(query.rows[0])
       // Cadastrando o endereço
@@ -81,7 +81,7 @@ exports.updateCustomers =  async function(req, res) {
     try{
       await client.query('BEGIN')
       const insertCustomer = 'UPDATE customer.customers SET CST_NAME = $1, CST_BIRTH = $2, CST_CPF = $3, CST_EMAIL = $4, CST_PHONE = $5, CST_GENDER = $6 WHERE CST_ID_PK = $7 RETURNING CST_ID_PK'
-      const customerValues = [req.body.name, req.body.birthday, req.body.cpf, req.body.email, req.body.phone, req.body.gender, req.params.id]
+      const customerValues = [req.body.name, req.body.birth, req.body.cpf, req.body.email, req.body.phone, req.body.gender, req.params.id]
       const query = await client.query(insertCustomer, customerValues)
       res.status(200).json({message: 'Cliente atualizado com sucesso!', client: query.rows[0].cst_id_pk, error: ''})
       console.log(query.rows[0])
