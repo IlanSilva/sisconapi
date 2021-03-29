@@ -73,15 +73,24 @@ exports.createCustomers = async function(req, res) {
 exports.updateCustomers =  async function(req, res) {
     console.log('A request has been received | ', Date())
 	if (!req.params.id){
-      res.status(404).json({message: 'Id do cliente não informado', client: [], error: ''})
+      res.status(404).json({message: 'Não foi possível completar sua solicitação!', client: [], error: 'Id do cliente não informado'})
       return
     }
     const client = await db.connect()
     let start = Date.now()
+    const insertCustomer = 'UPDATE customer.customers SET CST_NAME = $1, CST_BIRTH = $2, CST_CPF = $3, CST_EMAIL = $4, CST_PHONE = $5, CST_GENDER = $6 WHERE CST_ID_PK = $7 RETURNING CST_ID_PK'
+    const customerValues = [req.body.name, req.body.birth, req.body.cpf, req.body.email, req.body.phone, req.body.gender, req.params.id]
+    for (i = 0; i > customerValues.length(); i++){
+      if (i != 3 || i != 4){
+        if (!customerValues[i] || customerValues[i] == ""){
+          res.status(404).json({message: 'Não foi possível completar sua solicitação!', client: [], error: 'Verifique se há alguma informação faltando!'})
+          return 
+        }
+      }
+    }
     try{
       await client.query('BEGIN')
-      const insertCustomer = 'UPDATE customer.customers SET CST_NAME = $1, CST_BIRTH = $2, CST_CPF = $3, CST_EMAIL = $4, CST_PHONE = $5, CST_GENDER = $6 WHERE CST_ID_PK = $7 RETURNING CST_ID_PK'
-      const customerValues = [req.body.name, req.body.birth, req.body.cpf, req.body.email, req.body.phone, req.body.gender, req.params.id]
+      
       const query = await client.query(insertCustomer, customerValues)
       res.status(200).json({message: 'Cliente atualizado com sucesso!', client: query.rows[0].cst_id_pk, error: ''})
       console.log(query.rows[0])
